@@ -158,7 +158,7 @@ Diatur dengan export const dynamic = "force-dynamic" agar perubahan data selalu 
 components/TabelProduk.jsx
 Menambahkan penanganan tampilan kondisi kosong (empty state): menampilkan "Belum ada produk" jika tabel tidak memiliki data.
 
-## US-08 
+## US-08 Tambah produk (harus terkunci login)
 **Prompt:**
 buatkan fitur Tambah produk (harus terkunci login)
 
@@ -179,3 +179,42 @@ Memberikan indikator loading ("Menyimpan...") pada tombol submit saat proses ber
 app/admin/produk/baru/page.jsx
 Menyambungkan FormProduk dengan action tambahProduk.
 Menghapus komponen CatatanBelumAktif.
+
+## US-09 Ubah produk (harus terkunci login)
+**Prompt:**
+tambahkan fitur Ubah produk (harus terkunci login)
+
+**Hasil:**
+app/admin/actions.js
+Menambahkan Server Action ubahProduk:
+Memeriksa sesi login admin via supabase.auth.getUser() di server sebelum melakukan perubahan data. 
+Memvalidasi ID produk, nama produk, serta harga (angka dan ≥0≥0).
+Memperbarui data produk di tabel produk Supabase berdasarkan ID. 
+Melakukan revalidasi cache halaman (/, /admin, /produk/[id], /admin/produk/[id]/ubah). 
+Mengalihkan (redirect) kembali ke /admin setelah berhasil.
+  
+components/FormProduk.jsx 
+Menyisipkan input hidden name="id" secara otomatis saat formulir berada dalam mode edit produk.
+  
+app/admin/produk/[id]/ubah/page.jsx
+Mengambil data produk lama langsung dari database Supabase berdasarkan parameter ID.
+Memanggil notFound() jika produk tidak ditemukan di database.
+Mengisi form dengan data lama dan menghubungkannya ke action ubahProduk.
+Menghapus komponen CatatanBelumAktif.
+
+## US-10 Hapus produk (harus terkunci login)
+**Prompt:**
+buatkan fitur Hapus produk (harus terkunci login)
+
+**Hasil:**
+app/admin/actions.js
+Menambahkan Server Action hapusProduk: 
+Memeriksa sesi login admin via supabase.auth.getUser() di server sebelum melakukan penghapusan data.
+Menghapus baris produk dari tabel produk di Supabase berdasarkan ID.
+Melakukan revalidasi cache halaman (/, /admin, dan /produk/[id]).
+  
+components/TabelProduk.jsx
+Menghubungkan tombol "Hapus" ke Server Action hapusProduk.
+Menambahkan dialog konfirmasi interaktif (window.confirm) sebelum aksi hapus dijalankan: jika dibatalkan oleh pengguna, permintaan tidak akan dikirimkan.
+
+## US-12 Pilih jumlah atau varian
