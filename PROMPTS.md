@@ -31,9 +31,15 @@ Menghapus komponen CatatanBelumAktif dan data contoh.
 ## US-02 Detail produk
 
 **Prompt:**
+Baca docs/user-stories.md bagian US-02.
 
+Ubah app/produk/[id]/page.jsx supaya mengambil satu produk dari tabel "produk" di Supabase berdasarkan id di URL, di sisi server, memakai koneksi Supabase yang sudah dibuat di lib/supabase. Kalau produk tidak ditemukan, panggil notFound(). Jangan ubah tampilannya. Hapus CatatanBelumAktif dari halaman ini, tapi biarkan tombol WhatsApp.
 **Hasil:**
-
+app/produk/[id]/page.jsx:
+Mengambil data satu produk dari tabel produk di Supabase berdasarkan parameter id di URL menggunakan buatClientServer di sisi server. 
+Memanggil notFound() jika produk tidak ditemukan di database atau jika terjadi error / ID tidak valid.
+Mempertahankan tampilan dan komponen TombolWhatsApp.
+Menghapus komponen CatatanBelumAktif dan import data contoh.
 **Perbaikan:**
 
 ## US-03 Pesan via WhatsApp
