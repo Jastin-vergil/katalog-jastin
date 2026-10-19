@@ -163,3 +163,19 @@ Menambahkan penanganan tampilan kondisi kosong (empty state): menampilkan "Belum
 buatkan fitur Tambah produk (harus terkunci login)
 
 **Hasil:**
+app/admin/actions.js
+Menambahkan Server Action tambahProduk:
+Memeriksa sesi login admin via supabase.auth.getUser() di server sebelum melakukan mutasi data.
+Memvalidasi input (nama wajib diisi, harga berupa angka valid dan ≥0≥0).
+Menyimpan produk baru ke tabel produk di Supabase.
+Melakukan revalidasi halaman (revalidatePath) untuk / dan /admin.
+Mengalihkan (redirect) kembali ke /admin setelah berhasil.
+  
+components/FormProduk.jsx
+Menghubungkan form ke Server Action via useActionState. 
+Menampilkan pesan error jika pengisian form tidak valid atau terjadi kendala saat menyimpan. 
+Memberikan indikator loading ("Menyimpan...") pada tombol submit saat proses berlangsung.
+  
+app/admin/produk/baru/page.jsx
+Menyambungkan FormProduk dengan action tambahProduk.
+Menghapus komponen CatatanBelumAktif.

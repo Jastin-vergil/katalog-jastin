@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { buatClientSesiAdmin } from "@/lib/supabase/admin";
 
 export async function masukAdmin(prevState, formData) {
@@ -96,3 +97,53 @@ export async function gantiPassword(prevState, formData) {
 }
 
 export const changePassword = gantiPassword;
+
+export async function tambahProduk(prevState, formData) {
+  const data = formData instanceof FormData ? formData : prevState;
+  const nama = data?.get?.("nama")?.toString().trim();
+  const hargaStr = data?.get?.("harga")?.toString().trim();
+  const kategori = data?.get?.("kategori")?.toString().trim() || null;
+  const foto_url = data?.get?.("foto_url")?.toString().trim() || null;
+  const deskripsi = data?.get?.("deskripsi")?.toString().trim() || null;
+
+  if (!nama) {
+    return { error: "Nama produk wajib diisi." };
+  }
+
+  const harga = parseInt(hargaStr, 10);
+  if (isNaN(harga) || harga < 0) {
+    return { error: "Harga produk harus berupa angka dan tidak boleh negatif." };
+  }
+
+  try {
+    const supabase = await buatClientSesiAdmin();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { error: "Akses ditolak: Anda harus login sebagai admin." };
+    }
+
+    const { error: insertError } = await supabase.from("produk").insert({
+      nama,
+      harga,
+      kategori,
+      foto_url,
+      deskripsi,
+    });
+
+    if (insertError) {
+      return { error: `Gagal menyimpan produk: ${insertError.message}` };
+    }
+  } catch (err) {
+    return { error: `Terjadi kesalahan: ${err.message}` };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  redirect("/admin");
+}
+
+export const createProduct = tambahProduk;
