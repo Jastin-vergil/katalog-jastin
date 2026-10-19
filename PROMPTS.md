@@ -61,8 +61,25 @@ Membuka tautan di tab baru dengan atribut target="_blank" dan rel="noopener nore
 ## US-04 Login admin
 
 **Prompt:**
+Baca AGENTS.md bagian aturan keamanan dan docs/user-stories.md bagian US-04.
+
+Buat login admin memakai Supabase Auth (email dan password) dengan @supabase/ssr dan cookie, memakai SUPABASE_URL dan SUPABASE_PUBLISHABLE_KEY. Login diproses dengan Server Action di app/admin/actions.js dan disambungkan ke form di app/admin/login/page.jsx. Login berhasil diarahkan ke /admin; login gagal menampilkan pesan error yang jelas di halaman login. Buat juga tombol "Keluar" di components/NavAdmin.jsx berfungsi: mengakhiri sesi lalu kembali ke /admin/login. Jangan ubah tampilan. Hapus CatatanBelumAktif dari halaman login.
 
 **Hasil:**
+lib/supabase/admin.js & lib/supabase/index.js
+Membuat fungsi buatClientSesiAdmin() berbasis @supabase/ssr (createServerClient) yang menggunakan SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, dan cookies() dari next/headers untuk mengelola sesi login admin.
+  
+app/admin/actions.js 
+Membuat Server Action masukAdmin: memproses email dan password menggunakan signInWithPassword. Jika berhasil dialihkan ke /admin, jika gagal mengembalikan pesan error yang jelas (misal: "Email atau password salah").
+Membuat Server Action keluarAdmin: mengakhiri sesi admin dengan signOut dan mengarahkan kembali ke /admin/login.
+
+app/admin/login/page.jsx
+Menyambungkan form login ke Server Action masukAdmin via useActionState.
+Menampilkan pesan error di atas form ketika login gagal. 
+Menghapus komponen CatatanBelumAktif tanpa mengubah tampilan form.
+  
+components/NavAdmin.jsx
+Menghubungkan tombol "Keluar" ke Server Action keluarAdmin menggunakan <form action={keluarAdmin}> dengan mempertahankan posisi dan tampilan tombol.
 
 **Perbaikan:**
 
