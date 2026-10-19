@@ -228,3 +228,18 @@ Pemilihan Jumlah: Menambahkan tombol pengurang (−) dan penambah (+) dengan bat
 Pilihan Varian / Catatan: Menambahkan kolom isian varian atau catatan khusus (misalnya: Rasa pedas manis, Ukuran toples, dsb.).
 Kalkulasi Total: Menghitung estimasi total harga secara otomatis berdasarkan jumlah pesanan.
 Format Pesan WhatsApp: Menyusun pesan WhatsApp secara otomatis yang memuat rincian nama produk, jumlah barang, varian/catatan (jika diisi), serta total harga dalam format Rupiah.
+
+## US-13 Bisa di-install di HP (PWA)
+**Prompt:**
+tambahkan fitur Bisa di-install di HP (PWA)
+
+**Hasil:**
+app/manifest.js (dibuat) 
+Menghasilkan file Web App Manifest (/manifest.webmanifest) secara otomatis oleh Next.js. 
+Mengonfigurasi nama toko dari lib/toko.js, mode tampilan standalone, warna tema (#1f6b4f), warna latar, serta ikon ukuran 192x192 dan 512x512 dari folder public/icons. 
+public/sw.js (dibuat)
+Service Worker ringan untuk memenuhi kriteria instalasi PWA pada peramban mobile (Chrome/Chromium/Safari).
+  
+app/layout.jsx
+Menambahkan metadata PWA: manifest, icons, viewport.themeColor, dan appleWebApp (untuk dukungan iOS Safari).
+Menambahkan skrip pendaftaran Service Worker saat aplikasi dimuat di peramban.

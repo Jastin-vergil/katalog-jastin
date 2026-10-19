@@ -3,9 +3,23 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { toko } from "@/lib/toko";
 
+export const viewport = {
+  themeColor: "#1f6b4f",
+};
+
 export const metadata = {
   title: toko.nama,
   description: toko.tagline,
+  manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icons/icon-192.png",
+    apple: "/icons/icon-192.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: toko.nama,
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -23,6 +37,17 @@ export default function RootLayout({ children }) {
         <Header />
         <main className="mx-auto w-full max-w-5xl flex-1 px-4">{children}</main>
         <Footer />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js').catch(function() {});
+                });
+              }
+            `,
+          }}
+        />
       </body>
     </html>
   );
