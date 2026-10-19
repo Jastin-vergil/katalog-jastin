@@ -34,6 +34,7 @@ Menghapus komponen CatatanBelumAktif dan data contoh.
 Baca docs/user-stories.md bagian US-02.
 
 Ubah app/produk/[id]/page.jsx supaya mengambil satu produk dari tabel "produk" di Supabase berdasarkan id di URL, di sisi server, memakai koneksi Supabase yang sudah dibuat di lib/supabase. Kalau produk tidak ditemukan, panggil notFound(). Jangan ubah tampilannya. Hapus CatatanBelumAktif dari halaman ini, tapi biarkan tombol WhatsApp.
+
 **Hasil:**
 app/produk/[id]/page.jsx:
 Mengambil data satu produk dari tabel produk di Supabase berdasarkan parameter id di URL menggunakan buatClientServer di sisi server. 
@@ -45,9 +46,16 @@ Menghapus komponen CatatanBelumAktif dan import data contoh.
 ## US-03 Pesan via WhatsApp
 
 **Prompt:**
+Baca docs/rancangan-teknis.md bagian "Pesan WhatsApp (US-03)".
+
+Ubah components/TombolWhatsApp.jsx menjadi tautan yang membuka https://wa.me/ ke nomor di lib/toko.js, dengan pesan otomatis berisi nama dan harga produk dalam format rupiah. Pesan di-encode dengan encodeURIComponent dan dibuka di tab baru. Pertahankan tampilan tombolnya. Hapus CatatanBelumAktif yang menyebut US-03 di halaman detail produk.
 
 **Hasil:**
-
+components/TombolWhatsApp.jsx: 
+Mengubah elemen <button> menjadi tautan <a> dengan styling tampilan tombol yang sama persis (bg-utama, rounded, hover, dsb.).  
+Mengarahkan tautan ke https://wa.me/<nomor>?text=<pesan> menggunakan nomor dari lib/toko.js.
+Mengisi pesan otomatis dengan nama produk dan harga dalam format rupiah (menggunakan formatRupiah), yang di-encode dengan encodeURIComponent.
+Membuka tautan di tab baru dengan atribut target="_blank" dan rel="noopener noreferrer".
 **Perbaikan:**
 
 ## US-04 Login admin
