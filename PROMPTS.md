@@ -129,4 +129,15 @@ Menghapus komponen CatatanBelumAktif dari halaman admin.
 
 ## Debugging dan fitur bonus
 
-Tambahkan bagian baru untuk setiap error yang kamu perbaiki atau fitur bonus yang kamu kerjakan.
+**Prompt:**
+buatkan filter barang yang dijual
+
+**Hasil:**
+components/DaftarProdukKatalog.jsx (komponen baru)
+Filter Kategori: Tombol kategori otomatis dibentuk dari data kategori unik yang ada di database (ditambah opsi "Semua").
+Pencarian Real-time: Kolom pencarian untuk mencari nama atau deskripsi produk dengan tombol hapus cepat. 
+Status Kosong: Menampilkan pesan yang jelas jika tidak ada produk yang cocok dengan hasil filter/pencarian, lengkap dengan tombol "Reset filter".
+Desain Konsisten: Memakai token desain Tailwind CSS (bg-utama, border-garis, bg-latar, dsb.) dan tetap mempertahankan layout 2 kolom di mobile serta 3 kolom di desktop.
+  
+app/page.jsx
+Mengambil data produk dari database di sisi server, lalu meneruskannya ke komponen DaftarProdukKatalog untuk penyaringan instan tanpa membebani server/database berulang kali.
