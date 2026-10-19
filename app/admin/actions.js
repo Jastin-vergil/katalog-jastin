@@ -147,3 +147,63 @@ export async function tambahProduk(prevState, formData) {
 }
 
 export const createProduct = tambahProduk;
+
+export async function ubahProduk(prevState, formData) {
+  const data = formData instanceof FormData ? formData : prevState;
+  const id = data?.get?.("id")?.toString();
+  const nama = data?.get?.("nama")?.toString().trim();
+  const hargaStr = data?.get?.("harga")?.toString().trim();
+  const kategori = data?.get?.("kategori")?.toString().trim() || null;
+  const foto_url = data?.get?.("foto_url")?.toString().trim() || null;
+  const deskripsi = data?.get?.("deskripsi")?.toString().trim() || null;
+
+  if (!id) {
+    return { error: "ID produk tidak valid atau tidak ditemukan." };
+  }
+
+  if (!nama) {
+    return { error: "Nama produk wajib diisi." };
+  }
+
+  const harga = parseInt(hargaStr, 10);
+  if (isNaN(harga) || harga < 0) {
+    return { error: "Harga produk harus berupa angka dan tidak boleh negatif." };
+  }
+
+  try {
+    const supabase = await buatClientSesiAdmin();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { error: "Akses ditolak: Anda harus login sebagai admin." };
+    }
+
+    const { error: updateError } = await supabase
+      .from("produk")
+      .update({
+        nama,
+        harga,
+        kategori,
+        foto_url,
+        deskripsi,
+      })
+      .eq("id", id);
+
+    if (updateError) {
+      return { error: `Gagal mengubah produk: ${updateError.message}` };
+    }
+  } catch (err) {
+    return { error: `Terjadi kesalahan: ${err.message}` };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/admin");
+  revalidatePath(`/produk/${id}`);
+  revalidatePath(`/admin/produk/${id}/ubah`);
+  redirect("/admin");
+}
+
+export const updateProduct = ubahProduk;
