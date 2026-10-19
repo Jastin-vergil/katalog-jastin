@@ -82,7 +82,7 @@ components/NavAdmin.jsx
 Menghubungkan tombol "Keluar" ke Server Action keluarAdmin menggunakan <form action={keluarAdmin}> dengan mempertahankan posisi dan tampilan tombol.
 
 **Perbaikan:**
-
+membuat agar link masuk sebagai admin mengarahkan ke halaman login
 ## US-05 Ganti password
 
 **Prompt:**
