@@ -218,3 +218,13 @@ Menghubungkan tombol "Hapus" ke Server Action hapusProduk.
 Menambahkan dialog konfirmasi interaktif (window.confirm) sebelum aksi hapus dijalankan: jika dibatalkan oleh pengguna, permintaan tidak akan dikirimkan.
 
 ## US-12 Pilih jumlah atau varian
+
+**Prompt:**
+tambahkan fitur Pilih jumlah atau varian
+
+**Hasil:**
+components/TombolWhatsApp.jsx:
+Pemilihan Jumlah: Menambahkan tombol pengurang (−) dan penambah (+) dengan batas minimal 1 barang.
+Pilihan Varian / Catatan: Menambahkan kolom isian varian atau catatan khusus (misalnya: Rasa pedas manis, Ukuran toples, dsb.).
+Kalkulasi Total: Menghitung estimasi total harga secara otomatis berdasarkan jumlah pesanan.
+Format Pesan WhatsApp: Menyusun pesan WhatsApp secara otomatis yang memuat rincian nama produk, jumlah barang, varian/catatan (jika diisi), serta total harga dalam format Rupiah.
