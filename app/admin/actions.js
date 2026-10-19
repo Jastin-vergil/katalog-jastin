@@ -251,3 +251,82 @@ export async function hapusProduk(prevStateOrFormData, maybeFormData) {
 }
 
 export const deleteProduct = hapusProduk;
+
+export async function buatDeskripsiAI({ nama, kategori }) {
+  if (!nama || !nama.trim()) {
+    return { error: "Nama produk wajib diisi untuk membuat deskripsi AI." };
+  }
+
+  try {
+    const supabase = await buatClientSesiAdmin();
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      return { error: "Akses ditolak: Anda harus login sebagai admin." };
+    }
+  } catch (err) {
+    return { error: `Gagal verifikasi sesi admin: ${err.message}` };
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return {
+      error:
+        "GEMINI_API_KEY belum diatur di file .env.local. Tambahkan GEMINI_API_KEY untuk menggunakan fitur ini.",
+    };
+  }
+
+  const prompt = `Buatkan deskripsi produk yang menarik, ramah, dan singkat (1-2 kalimat) untuk katalog toko UMKM dalam bahasa Indonesia.
+Nama produk: ${nama.trim()}
+Kategori: ${kategori ? kategori.trim() : "Umum"}
+Berikan hanya teks deskripsinya saja tanpa tanda kutip, tanpa judul, dan tanpa format markdown tambahan.`;
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            parts: [
+              {
+                text: prompt,
+              },
+            ],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 200,
+        },
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      return {
+        error: `Gagal memanggil Gemini API: ${
+          data.error?.message || response.statusText
+        }`,
+      };
+    }
+
+    const deskripsi = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!deskripsi) {
+      return { error: "Gemini tidak mengembalikan deskripsi yang valid." };
+    }
+
+    return { deskripsi };
+  } catch (err) {
+    return { error: `Terjadi kesalahan saat memanggil Gemini API: ${err.message}` };
+  }
+}
+
+export const generateDescriptionAI = buatDeskripsiAI;

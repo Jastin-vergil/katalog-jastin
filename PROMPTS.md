@@ -243,3 +243,23 @@ Service Worker ringan untuk memenuhi kriteria instalasi PWA pada peramban mobile
 app/layout.jsx
 Menambahkan metadata PWA: manifest, icons, viewport.themeColor, dan appleWebApp (untuk dukungan iOS Safari).
 Menambahkan skrip pendaftaran Service Worker saat aplikasi dimuat di peramban.
+
+## US-14 Deskripsi produk dibuat AI
+**Prompt:**
+US-14 Deskripsi produk dibuat AI
+
+**Hasil:**
+app/admin/actions.js 
+Menambahkan Server Action buatDeskripsiAI:
+Memverifikasi bahwa pemanggil adalah admin yang terautentikasi (supabase.auth.getUser()).
+Mengambil GEMINI_API_KEY dari environment variable.
+Mengirim prompt ke REST API Google Gemini (gemini-2.0-flash) secara native di server (tanpa library tambahan) untuk menyusun deskripsi produk yang menarik, ringkas, dan relevan berdasarkan nama dan kategori produk. 
+Mengembalikan teks deskripsi hasil AI atau pesan error yang informatif.
+  
+components/FormProduk.jsx
+Menambahkan tombol "✨ Buat deskripsi dengan AI" tepat di atas kolom deskripsi.
+Mengambil nilai nama produk dan kategori yang sedang diketik, menampilkan status loading "Membuat dengan AI...", dan secara otomatis mengisi area teks deskripsi dengan hasil dari Gemini.
+Pengguna tetap dapat mengedit atau menyesuaikan teks deskripsi yang dihasilkan AI sebelum menyimpannya.
+  
+.env.example
+Menambahkan variabel GEMINI_API_KEY= sebagai referensi konfigurasi.
