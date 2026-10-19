@@ -129,6 +129,7 @@ Menghapus komponen CatatanBelumAktif dari halaman admin.
 
 ## Debugging dan fitur bonus
 
+## US-11 Proteksi halaman admin
 **Prompt:**
 buatkan filter barang yang dijual
 
@@ -141,3 +142,24 @@ Desain Konsisten: Memakai token desain Tailwind CSS (bg-utama, border-garis, bg-
   
 app/page.jsx
 Mengambil data produk dari database di sisi server, lalu meneruskannya ke komponen DaftarProdukKatalog untuk penyaringan instan tanpa membebani server/database berulang kali.
+
+## US-07 List produk di halaman admin dari database
+
+**Prompt:**
+List produk di halaman admin dari database
+
+**Hasil:**
+app/admin/page.jsx
+Mengambil daftar produk langsung dari tabel produk di database Supabase di sisi server, bukan lagi dari data contoh (lib/data-contoh.js). 
+Menggunakan client sesi admin yang terautentikasi (dengan fallback yang aman ke server client).
+Menampilkan pesan error yang jelas jika terjadi kendala pengambilan data dari database. 
+Diatur dengan export const dynamic = "force-dynamic" agar perubahan data selalu termuat secara realtime.
+  
+components/TabelProduk.jsx
+Menambahkan penanganan tampilan kondisi kosong (empty state): menampilkan "Belum ada produk" jika tabel tidak memiliki data.
+
+## US-08 
+**Prompt:**
+buatkan fitur Tambah produk (harus terkunci login)
+
+**Hasil:**
